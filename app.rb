@@ -1,6 +1,8 @@
 # encoding: utf-8
 require 'sinatra'
 require 'haml'
+require 'redcarpet'
+require 'grit'
 
 require_relative 'minify_resources'
 class MyApp < Sinatra::Application
