@@ -1,3 +1,0 @@
-[submodule "tmp"]
-	path = tmp
-	url = git@github.com:apazzolini/docula-sample.git

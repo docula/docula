@@ -4,7 +4,7 @@ class MyApp < Sinatra::Application
   get "/" do
     @title = "Welcome to MyApp 3"
 
-    repo = Grit::Repo.new("/Users/Andre/GitHub/docula/tmp/repo/")
+    repo = Grit::Repo.new("/Users/Andre/docula-sample/")
     tree = repo.commits.first.tree
 
     @tree = print_tree(tree, 0)
