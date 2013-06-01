@@ -2,13 +2,13 @@
 require 'sequel'
 require 'yaml'
 
-$db_config = YAML.load_file('models/db.yml')
+$db_config = YAML.load_file('cfg/' + ENV['USER'] + '.yml')
 
-DB = Sequel.connect(:adapter => $db_config['adapter'],
-                    :host => $db_config['host'],
-                    :user => $db_config['user'],
-                    :password => $db_config['password'],
-                    :database => $db_config['database'])
+DB = Sequel.connect(:adapter => ENV['docula.db.adapter'],
+                    :host => ENV['docula.db.host'],
+                    :user => ENV['docula.db.username'],
+                    :password => ENV['docula.db.password'],
+                    :database => ENV['docula.db.database'])
 
 if ($db_config['recreate'])
   if (DB.table_exists?(:docsets))

@@ -1,0 +1,9 @@
+recreate : true
+
+data :
+  - name : 'docula-sample'
+    branch : 'master'
+    fs_path : '/Users/Andre/GitHub/docula-sample'
+  - name : 'docula-sample2'
+    branch : 'master'
+    fs_path : '/Users/Andre/GitHub/docula-sample2'
