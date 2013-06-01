@@ -5,6 +5,7 @@ require 'redcarpet'
 require 'grit'
 
 require_relative 'minify_resources'
+
 class Docula < Sinatra::Application
   enable :sessions
 

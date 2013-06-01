@@ -7,3 +7,6 @@ Docula.helpers NiceBytes
 
 require_relative 'wiki'
 Docula.helpers Wiki
+
+require_relative 'markdown'
+Docula.helpers DoculaMarkdown
