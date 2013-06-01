@@ -5,9 +5,6 @@ Docula.helpers PartialPartials
 require_relative 'nicebytes'
 Docula.helpers NiceBytes
 
-require_relative 'wiki'
-Docula.helpers Wiki
-
 require_relative 'links'
 Docula.helpers Links
 
