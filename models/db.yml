@@ -1,0 +1,15 @@
+adapter : 'mysql'
+host : 'localhost'
+user : 'root'
+password : 'broadleaf'
+database : ''
+
+recreate : true
+
+data :
+  - name : 'docula-sample'
+    branch : 'master'
+    fs_path : '/Users/phillipverheyden/docula-sample'
+  - name : 'docula-sample2'
+    branch : 'master'
+    fs_path : '/Users/phillipverheyden/docula-sample2'

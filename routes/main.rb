@@ -1,17 +1,19 @@
 # encoding: utf-8
+
+$config = YAML.load_file('properties.yml')
+
 class Docula < Sinatra::Application
 
-  get '/' do
-    @title = 'Welcome to Docula'
-
-    repo = Grit::Repo.new('/Users/Andre/GitHub/docula-sample/')
+  get "/" do
+    @title = "Welcome to Docula"
+    repo = Grit::Repo.new($config['doc_repo_path'])
     tree = repo.commits.first.tree
 
     @tree = print_tree(tree, 0)
 
     haml :main
   end
-
+  
   get '/:name/:branch' do
     docset = DocSet[:name => params[:name], :branch => params[:branch]]
 
@@ -33,5 +35,12 @@ class Docula < Sinatra::Application
 
     haml :test
   end
+
+  get '/links' do
+    @dirs = Links::build_tree($config['doc_repo_path'])
+
+    haml :links
+  end
+
 
 end
