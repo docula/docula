@@ -5,6 +5,6 @@ module PartialPartials
     end
 
     def partial( page, variables={} )
-        haml page, {layout:false}, variables
+        haml page, {layout => false}, variables
     end
 end
