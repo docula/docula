@@ -1,8 +1,8 @@
 # encoding: utf-8
-class MyApp < Sinatra::Application
+class Docula < Sinatra::Application
 
   get "/" do
-    @title = "Welcome to MyApp 3"
+    @title = "Welcome to Docula"
 
     repo = Grit::Repo.new("/Users/Andre/docula-sample/")
     tree = repo.commits.first.tree

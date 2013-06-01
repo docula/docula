@@ -5,7 +5,7 @@ require 'redcarpet'
 require 'grit'
 
 require_relative 'minify_resources'
-class MyApp < Sinatra::Application
+class Docula < Sinatra::Application
   enable :sessions
 
   configure :production do
