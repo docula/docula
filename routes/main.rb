@@ -36,8 +36,9 @@ class Docula < Sinatra::Application
     haml :test
   end
 
-  get '/links' do
-    @dirs = Links::build_tree($config['doc_repo_path'])
+  get '/:name/:branch/links' do
+    docset = DocSet[:name => params[:name], :branch => params[:branch]]
+    @dirs = Links::build_tree(docset.fs_path)
 
     haml :links
   end
