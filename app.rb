@@ -18,6 +18,7 @@ class Docula < Sinatra::Application
   end
 
   configure :development do
+    set :haml, {:ugly => true}
     set :css_files, MinifyResources::CSS_FILES
     set :js_files, MinifyResources::JS_FILES
   end

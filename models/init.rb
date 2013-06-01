@@ -1,6 +1,22 @@
 # encoding: utf-8
-#require 'sequel'
-# DB = Sequel.postgres 'dbname', user:'bduser', password:'dbpass', host:'localhost'
-# DB << "SET CLIENT_ENCODING TO 'UTF8';"
+require 'sequel'
 
-#require_relative 'user'
+DB = Sequel.connect(:adapter => 'mysql',
+                    :host => 'localhost',
+                    :user => 'root',
+                    :password => '',
+                    :database => 'docula')
+
+DB.drop_table :docsets
+DB.create_table :docsets do
+  primary_key :id
+  String :name
+  String :branch
+  String :fs_path
+end
+
+docsets = DB[:docsets]
+
+docsets.insert(:name => 'docula-sample', :branch => 'master', :fs_path => '/Users/Andre/GitHub/docula-sample')
+
+require_relative 'docset'

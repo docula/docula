@@ -12,6 +12,20 @@ class Docula < Sinatra::Application
     haml :main
   end
 
+  get '/:name/:branch' do
+    docset = DocSet[:name => params[:name], :branch => params[:branch]]
+
+    root = File.open(docset.fs_path)
+    index = File.open(root.path + '/index.md')
+
+    @md = DoculaMarkdown.render('test-path', index.read)
+
+    root.close
+    index.close
+
+    haml :test
+  end
+
   get '/render' do
     @title = 'Markdown Parsing Test'
 
