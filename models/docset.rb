@@ -30,7 +30,7 @@ class DocSet < Sequel::Model(:docsets)
         path = @url_fs_map[@docname_url_map[docname]]
         unless docname == '.'
           if Dir.exist?(path)
-            result += build_sidebar_md(path, level + 1)
+            result << build_sidebar_md(path, level + 1)
           end
         end
       }
