@@ -20,7 +20,7 @@ class Docula < Sinatra::Application
     root = File.open(docset.fs_path)
     index = File.open(root.path + '/index.md')
 
-    @md = DoculaMarkdown.render('test-path', index.read)
+    @md = DoculaMarkdown.render(docset, index.read)
 
     root.close
     index.close

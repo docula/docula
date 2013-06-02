@@ -5,8 +5,5 @@ Docula.helpers PartialPartials
 require_relative 'nicebytes'
 Docula.helpers NiceBytes
 
-require_relative 'links'
-Docula.helpers Links
-
 require_relative 'markdown'
 Docula.helpers DoculaMarkdown

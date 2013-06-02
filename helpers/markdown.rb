@@ -1,8 +1,9 @@
 module DoculaMarkdown
 
   class DoculaHTMLRender < Redcarpet::Render::HTML
-    def initialize(cur_path)
-      @cur_path = cur_path
+
+    def initialize(docset)
+      @docset = docset
       super()
     end
 
@@ -13,17 +14,16 @@ module DoculaMarkdown
 
     # Fires off all necessary Docula preprocessors
     def preprocess(full_doc)
-      handle_doc_link(full_doc)
+      handle_internal_doc_links(full_doc)
       full_doc
     end
 
     # Replaces double bracket internal link expressions with regular link expressions
-    def handle_doc_link(full_doc)
-      page_map = get_page_map()
+    def handle_internal_doc_links(full_doc)
 
       full_doc.gsub!(/\[{2}([^|\]]*)\|?([^|\]]*)\]{2}/) { |s|
         display_text = $1.strip
-        url = page_map[display_text.downcase]
+        url = @docset.url_path(display_text)
 
         unless $2.strip.empty?
           display_text = $2.strip
@@ -35,10 +35,6 @@ module DoculaMarkdown
           s
         end
       }
-    end
-
-    def get_page_map
-      { 'sub me' => '/f1/sub-me.md' }
     end
 
   end
@@ -53,8 +49,8 @@ module DoculaMarkdown
   }
 
   # Render the given text with Docula's markdown renderer
-  def self.render(cur_path, md_text)
-    render = DoculaHTMLRender.new(cur_path)
+  def self.render(docset, md_text)
+    render = DoculaHTMLRender.new(docset)
     markdown = Redcarpet::Markdown.new(render, @markdown_options)
     markdown.render(md_text)
   end
