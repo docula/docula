@@ -12,11 +12,11 @@ class DocSet < Sequel::Model(:docsets)
     result = ''
     File.open(base_dir + '/_sidebar.md', 'r').each_line do |line|
       indent = ' ' * (4 * level)
-      result += indent + line + "\n"
+      result += indent + line
     end
 
     Dir.foreach(base_dir) do |dir_item|
-      if !dir_item.start_with?('.')
+      if !dir_item.start_with?('.') and Dir.exist?(base_dir + '/' + dir_item)
         result += build_sidebar_md_helper(base_dir + '/' + dir_item, level + 1)
       end
     end
