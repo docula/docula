@@ -1,6 +1,4 @@
-# encoding: utf-8
 class DocSet < Sequel::Model(:docsets)
-
   # Database persisted properties
   @name = nil
   @branch = nil
@@ -9,33 +7,33 @@ class DocSet < Sequel::Model(:docsets)
   def after_initialize
     @docname_url_map = {'.' => ''}
     @url_fs_map = {'' => self.fs_path}
+
     build_lookup_maps(self.fs_path)
   end
 
-  # Returns a String with the full indented markdown-formatted sidebar for this entire
-  # docset
-  def build_sidebar_md
-    build_sidebar_md_helper(self.fs_path, 0)
+  # Returns a String with the full indented markdown-formatted
+  # sidebar for this entire docset
+  def sidebar_md
+    build_sidebar_md(self.fs_path, 0)
   end
 
-  def build_sidebar_md_helper(base_dir, level)
+  def build_sidebar_md(base_dir, level)
     result = ''
-    File.open(base_dir + '/_sidebar.md', 'r').each_line do |line|
-      # For each line, determine if it is a subdirectory or not
-      # and then build each sidebar for each subdirectory
-      line.gsub!(/-.*\[{2}(.*)\]{2}/) { |s|
-        # build the sidebar text for the current item
-        result += ' ' * (4 * level) + s + "\n"
 
-        #if the current item is a directory, build the sidebar for that directory
+    File.open(base_dir + '/_sidebar.md', 'r').each_line do |line|
+      line.gsub!(/-.*\[{2}(.*)\]{2}/) { |s|
+        # Build the sidebar text for the current item
+        result += (' ' * (4 * level)) + s + "\n"
+
+        # If the current item is a directory, build the sidebar for that directory
         docname = $1.split('|')[0].strip.downcase
         path = @url_fs_map[@docname_url_map[docname]]
         if Dir.exist?(path)
-          result += build_sidebar_md_helper(path, level + 1)
+          result += build_sidebar_md(path, level + 1)
         end
-
       }
     end
+
     result
   end
 
@@ -44,17 +42,16 @@ class DocSet < Sequel::Model(:docsets)
     @url_fs_map[url].chomp('/') unless @url_fs_map[url].nil?
   end
 
-  # Returns the url path for a given unformatted url
+  # Returns the url path for the given document name
   def url_path(docname)
-    @docname_url_map[docname.downcase].chomp('/') unless @docname_url_map[docname].nil?
+    key = docname.downcase
+    @docname_url_map[key].chomp('/') unless @docname_url_map[key].nil?
   end
 
+  # Returns the full url for the given document name
   def full_url(docname)
-    if (url_path(docname))
-      self.name + '/' + self.branch + '/' + url_path(docname)
-    else
-      nil
-    end
+    url = url_path(docname)
+    '/' + '/'.join(self.name, self.branch, url) if url
   end
 
   # Assuming that markdown links look like this:
@@ -82,17 +79,16 @@ class DocSet < Sequel::Model(:docsets)
         filepath = File::basename(absolute_path, File::extname(absolute_path))
         relative_filepath = relative_path + filepath
         url = build_url(relative_filepath)
-        @docname_url_map[build_key(relative_filepath)] = url
+        @docname_url_map[build_docname_key(relative_filepath)] = url
 
         @url_fs_map[url] = absolute_path + file_ext
       end
     end
   end
 
-  # Given a relative path to a file, build the correct key to @docname_url_map
-  def build_key(relative_path)
-    # Currently assuming unique file names so the key should not build any directory
-    # path information
+  # Given a relative path to a file, build the correct key for @docname_url_map
+  # Note: Currently assumes that document names are unique per document set
+  def build_docname_key(relative_path)
     File::basename(relative_path.gsub(/-/, ' ').downcase)
   end
 
@@ -100,5 +96,4 @@ class DocSet < Sequel::Model(:docsets)
   def build_url(relative_path)
     relative_path.gsub(/\s/, '-').downcase
   end
-
 end

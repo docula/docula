@@ -1,4 +1,3 @@
-# encoding: utf-8
 module NiceBytes
   K = 2.0**10
   M = 2.0**20
