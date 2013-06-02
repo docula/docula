@@ -1,11 +1,12 @@
 class Docula < Sinatra::Application
 
   # We will rely on the splat path matcher to support files that are in subdirectories
-  %w(/:name/:branch /:name/:branch/*).each do |path|
+  %w(/:name/:branch /:name/:branch/*.*).each do |path|
     get path do
       name     = params[:name]
       branch   = params[:branch]
       url_path = params[:splat][0].to_s.chomp('/')
+      extension = params[:splat][1]
 
       docset = DocSet[:name => name, :branch => branch]
 
@@ -17,11 +18,18 @@ class Docula < Sinatra::Application
       end
 
       File.open(absolute_path) do |file|
-        @md = DoculaMarkdown.render(docset, file.read)
+        @md = file.read
+        @html = DoculaMarkdown.render(docset, @md)
         @sidebar = DoculaMarkdown.render_sidebar(docset)
       end
 
-      haml :page, :layout => !request.xhr?
+      if extension == 'raw'
+        @md
+      elsif extension == 'html'
+        @html
+      else
+        haml :page, :layout => !request.xhr?
+      end
     end
   end
 
