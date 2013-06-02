@@ -1,6 +1,29 @@
 # encoding: utf-8
 class DocSet < Sequel::Model(:docsets)
 
+  # Returns a String with the full indented markdown-formatted sidebar for this entire
+  # docset
+  def build_sidebar_md
+    build_sidebar_md_helper(self.fs_path, 0)
+  end
+
+  def build_sidebar_md_helper(base_dir, level)
+    #get the sidebar for the current directory
+    result = ''
+    File.open(base_dir + '/_sidebar.md', 'r').each_line do |line|
+      indent = ' ' * (4 * level)
+      result += indent + line + "\n"
+    end
+
+    Dir.foreach(base_dir) do |dir_item|
+      if !dir_item.start_with?('.')
+        result += build_sidebar_md_helper(base_dir + '/' + dir_item, level + 1)
+      end
+    end
+
+    return result
+  end
+
   # Returns the url path for a given unformatted url
   def url_path(url)
     return link_map[build_key(url)]
