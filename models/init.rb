@@ -1,9 +1,6 @@
 require 'sequel'
 require 'yaml'
 
-# We will load configuration from user specific files
-$db_config = YAML.load_file('cfg/' + ENV['USER'] + '.yml')
-
 # Database connection information is read from environment variables
 DB = Sequel.connect(:adapter  => ENV['docula.db.adapter'],
                     :host     => ENV['docula.db.host'],
@@ -13,7 +10,7 @@ DB = Sequel.connect(:adapter  => ENV['docula.db.adapter'],
 
 # If the recreate flag is set to true in a user's property file, we will
 # recreate and seed the database with the values from the user's property file
-if ($db_config['recreate'])
+if ($config['recreate'])
   if (DB.table_exists?(:docsets))
     DB.drop_table :docsets
   end
@@ -27,7 +24,7 @@ if ($db_config['recreate'])
 
   docsets = DB[:docsets]
 
-  $db_config['data'].each do |record|
+  $config['data'].each do |record|
     docsets.insert(:name    => record['name'],
                    :branch  => record['branch'],
                    :fs_path => record['fs_path'])

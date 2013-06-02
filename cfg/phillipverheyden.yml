@@ -1,5 +1,7 @@
 recreate : true
 
+theme : default
+
 data :
   - name    : 'docula-sample'
     branch  : 'master'

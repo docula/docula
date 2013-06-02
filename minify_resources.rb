@@ -1,14 +1,16 @@
 #!/usr/bin/env ruby
 
+$config = YAML.load_file('cfg/' + ENV['USER'] + '.yml')
+
 module MinifyResources
-  CSS_BLOB = 'public/blob.css'
-  CSS_DIR = 'public/css'
-  CSS_LIST = 'public/css/manifest.txt'
+  CSS_BLOB = "public/#{$config['theme']}/blob.css"
+  CSS_DIR = "public/#{$config['theme']}/css"
+  CSS_LIST = "public/#{$config['theme']}/css/manifest.txt"
   CSS_FILES = File.exists?(CSS_LIST) ? IO.read(CSS_LIST).scan(/\S+/) : Dir.chdir(CSS_DIR) { Dir['*.css'] }
 
-  JS_BLOB = 'public/blob.js'
-  JS_DIR = 'public/js'
-  JS_LIST = 'public/js/manifest.txt'
+  JS_BLOB = "public/#{$config['theme']}/blob.js"
+  JS_DIR = "public/#{$config['theme']}/js"
+  JS_LIST = "public/#{$config['theme']}/js/manifest.txt"
   JS_FILES = File.exists?(JS_LIST) ? IO.read(JS_LIST).scan(/\S+/) : Dir.chdir(JS_DIR) { Dir['**/*.js'] }
 
   def self.minify_all
