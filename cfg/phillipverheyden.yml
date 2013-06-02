@@ -1,9 +1,10 @@
 recreate : true
 
 data :
-  - name : 'docula-sample'
-    branch : 'master'
+  - name    : 'docula-sample'
+    branch  : 'master'
     fs_path : '/Users/phillipverheyden/docula-sample'
-  - name : 'docula-sample2'
-    branch : 'master'
+
+  - name    : 'docula-sample2'
+    branch  : 'master'
     fs_path : '/Users/phillipverheyden/docula-sample2'

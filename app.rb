@@ -10,7 +10,7 @@ class Docula < Sinatra::Application
   enable :sessions
 
   configure :production do
-    set :haml, {:ugly => true}
+    set :haml, { :ugly => true }
     set :clean_trace, true
     set :css_files, :blob
     set :js_files, :blob
@@ -18,7 +18,7 @@ class Docula < Sinatra::Application
   end
 
   configure :development do
-    set :haml, {:ugly => true}
+    set :haml, { :ugly => true }
     set :css_files, MinifyResources::CSS_FILES
     set :js_files, MinifyResources::JS_FILES
   end

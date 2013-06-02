@@ -4,8 +4,8 @@ $config = YAML.load_file('properties.yml')
 
 class Docula < Sinatra::Application
 
-  get "/" do
-    @title = "Welcome to Docula"
+  get '/' do
+    @title = 'Welcome to Docula'
     repo = Grit::Repo.new($config['doc_repo_path'])
     tree = repo.commits.first.tree
 
@@ -24,14 +24,6 @@ class Docula < Sinatra::Application
 
     root.close
     index.close
-
-    haml :test
-  end
-
-  get '/render' do
-    @title = 'Markdown Parsing Test'
-
-    @md = DoculaMarkdown.render('md goes here')
 
     haml :test
   end
