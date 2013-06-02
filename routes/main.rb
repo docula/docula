@@ -37,6 +37,7 @@ class Docula < Sinatra::Application
 
     # Get markdown for the file
     @md = DoculaMarkdown.render(docset, file.read)
+    @sidebar = docset.build_sidebar_md
 
     file.close
 
