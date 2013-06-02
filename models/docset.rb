@@ -44,6 +44,14 @@ class DocSet < Sequel::Model(:docsets)
     @docname_url_map[docname.downcase]
   end
 
+  def full_url(docname)
+    if (url_path(docname))
+      self.name + '/' + self.branch + '/' + url_path(docname)
+    else
+      nil
+    end
+  end
+
   # Assuming that markdown links look like this:
   #   [[ Some File Name | other display name]]
   # the link map that is returned is keyed by the the left-hand side of the pipe, lowercase.

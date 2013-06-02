@@ -23,7 +23,7 @@ module DoculaMarkdown
 
       full_doc.gsub!(/\[{2}([^|\]]*)\|?([^|\]]*)\]{2}/) { |s|
         display_text = $1.strip
-        url = @docset.url_path(display_text)
+        url = @docset.full_url(display_text)
 
         unless $2.strip.empty?
           display_text = $2.strip
