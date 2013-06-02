@@ -13,17 +13,32 @@ class Docula < Sinatra::Application
 
     haml :main
   end
-  
-  get '/:name/:branch' do
-    docset = DocSet[:name => params[:name], :branch => params[:branch]]
 
-    root = File.open(docset.fs_path)
-    index = File.open(root.path + '/index.md')
+  # We will rely on the splat path matcher to support files that are in subdirectories
+  get '/:name/:branch/*' do
+    name      = params[:name]
+    branch    = params[:branch]
+    file_path = params[:splat][0].to_s.chomp('/')
 
-    @md = DoculaMarkdown.render(docset, index.read)
+    # If file_path is empty at this stage, we are looking for the root index.md file
+    if file_path.empty?
+      file_path = 'index'
+    end
 
-    root.close
-    index.close
+    docset = DocSet[:name => name, :branch => branch]
+    doc_root = docset.fs_path << '/' unless docset.fs_path.end_with?('/')
+
+    # Attempt to load the current file. If it's not found, assume it's a directory and try again.
+    begin
+      file = File.open(doc_root + file_path + '.md')
+    rescue
+      file = File.open(doc_root + file_path + '/index.md')
+    end
+
+    # Get markdown for the file
+    @md = DoculaMarkdown.render(docset, file.read)
+
+    file.close
 
     haml :test
   end
