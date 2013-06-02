@@ -26,8 +26,13 @@ class DocSet < Sequel::Model(:docsets)
         result += (' ' * (4 * level)) + s + "\n"
 
         # If the current item is a directory, build the sidebar for that directory
-        docname = $1.split('|')[0].strip.downcase
+        docname = $1.downcase.strip
+        if docname.include?('|')
+          docname = docname.split('|')[1].strip
+        end
+
         path = @url_fs_map[@docname_url_map[docname]]
+
         unless docname == '.'
           if Dir.exist?(path)
             result << build_sidebar_md(path, level + 1)
@@ -75,22 +80,23 @@ class DocSet < Sequel::Model(:docsets)
 
   # Populates the given docname_url_map and then returns it back to the caller
   def build_lookup_maps(base_dir)
-    relative_path = base_dir.sub(self.fs_path, '').sub(/^\//, '')
     Dir.foreach(base_dir) do |dir_item|
       # exclude . and _ files/directories
       unless dir_item.start_with?('.', '_')
         absolute_path = "#{base_dir}/#{dir_item}"
+        filename = File::basename(absolute_path)
+
         if Dir.exist?(absolute_path)
-          build_lookup_maps(absolute_path + '/')
+          build_lookup_maps(absolute_path)
+        else
+          filename = File::basename(absolute_path, File::extname(absolute_path))
         end
 
-        #Build the URL which should be the relative path to the file minus the file extension
-        filepath = File::basename(absolute_path, File::extname(absolute_path))
-        relative_filepath = relative_path + filepath
-        url = build_url(relative_filepath)
-        @docname_url_map[build_docname_key(relative_filepath)] = url
+        url = build_url("#{base_dir}/#{filename}")
+        @url_fs_map[url] = absolute_path
 
-        @url_fs_map[url] = absolute_path.squeeze('/')
+        docname = build_docname_key(filename)
+        @docname_url_map[docname] = url
       end
     end
   end
@@ -101,8 +107,10 @@ class DocSet < Sequel::Model(:docsets)
     File::basename(relative_path.gsub(/-/, ' ').downcase)
   end
 
-  # Given a relative path to a file, builds the url to that file
-  def build_url(relative_path)
-    relative_path.gsub(/\s/, '-').downcase
+  # Given an absolute path to a file without the extension, builds the url to that file
+  # Assuming an absolute path equal to '/Users/Andre/docula-sample/Dir-One/File-Two',
+  # and self.fs_path equal to '/Users/Andre/docula-sample', returns '/dir-one/file-two'
+  def build_url(absolute_path)
+    absolute_path.gsub(self.fs_path, '').gsub(/^\//, '').downcase
   end
 end
