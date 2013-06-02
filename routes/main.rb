@@ -21,7 +21,7 @@ class Docula < Sinatra::Application
         @sidebar = DoculaMarkdown.render_sidebar(docset)
       end
 
-      haml :test
+      haml :page, :layout => !request.xhr?
     end
   end
 

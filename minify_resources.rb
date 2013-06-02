@@ -9,7 +9,7 @@ module MinifyResources
   JS_BLOB = 'public/blob.js'
   JS_DIR = 'public/js'
   JS_LIST = 'public/js/manifest.txt'
-  JS_FILES = File.exists?(JS_LIST) ? IO.read(JS_LIST).scan(/\S+/) : Dir.chdir(JS_DIR) { Dir['*.js'] }
+  JS_FILES = File.exists?(JS_LIST) ? IO.read(JS_LIST).scan(/\S+/) : Dir.chdir(JS_DIR) { Dir['**/*.js'] }
 
   def self.minify_all
     require 'jsmin'
