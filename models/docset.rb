@@ -1,13 +1,14 @@
 # encoding: utf-8
 class DocSet < Sequel::Model(:docsets)
 
+  # Database persisted properties
   @name = nil
   @branch = nil
   @fs_path = nil
 
   def after_initialize
     @docname_url_map = {'.' => ''}
-    @url_fs_map = {}
+    @url_fs_map = {'' => self.fs_path}
     build_lookup_maps(self.fs_path)
   end
 
@@ -35,13 +36,17 @@ class DocSet < Sequel::Model(:docsets)
 
       }
     end
+    result
+  end
 
-    return result
+  # Returns the absolute file system path for the given url fragment
+  def absolute_path(url)
+    @url_fs_map[url].chomp('/') unless @url_fs_map[url].nil?
   end
 
   # Returns the url path for a given unformatted url
   def url_path(docname)
-    @docname_url_map[docname.downcase]
+    @docname_url_map[docname.downcase].chomp('/') unless @docname_url_map[docname].nil?
   end
 
   def full_url(docname)
