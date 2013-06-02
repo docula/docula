@@ -14,7 +14,7 @@ class Docula < Sinatra::Application
       # we want to render the index.md file in that directory.
       absolute_path = docset.absolute_path(url_path)
       if Dir.exist?(absolute_path)
-        absolute_path << '/index.md'
+        absolute_path << '/_index.md'
       end
 
       absolute_path << (File::extname(absolute_path) == '' ? ".#{extension}" : '')
