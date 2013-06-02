@@ -1,7 +1,7 @@
 class Docula < Sinatra::Application
 
   # We will rely on the splat path matcher to support files that are in subdirectories
-  %w(/:name/:branch /:name/:branch/* /:name/:branch/*.*).each do |path|
+  %w(/:name/:branch /:name/:branch/*.* /:name/:branch/*).each do |path|
     get path do
       name     = params[:name]
       branch   = params[:branch]
