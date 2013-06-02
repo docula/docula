@@ -46,7 +46,8 @@ class DocSet < Sequel::Model(:docsets)
 
   # Returns the absolute file system path for the given url fragment
   def absolute_path(url)
-    @url_fs_map[url].chomp('/') unless @url_fs_map[url].nil?
+    return @url_fs_map[url].chomp('/') unless @url_fs_map[url].nil?
+    self.fs_path + '/' + url unless url.nil?
   end
 
   # Returns the url path for the given document name

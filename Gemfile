@@ -12,3 +12,7 @@ gem 'mysql'
 gem 'grit'
 gem 'redcarpet', '~>2.1.1'
 gem 'pygments.rb', '~>0.3.2'
+
+# To use on osx - 'brew install libmagic'
+# To use on linux - apt-get install file-devel
+gem 'ruby-filemagic'
