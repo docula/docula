@@ -15,11 +15,32 @@ module DoculaMarkdown
     # Automatically invoked by Redcarpet
     def preprocess(full_doc)
       handle_internal_doc_links(full_doc)
+      handle_internal_image_urls(full_doc)
       full_doc
     end
 
-    # Replaces double bracket internal link expressions with regular markdown link expressions
-    # Matches both [[Doc Name]] and [[Doc Name | Friendly Display Name]]
+    # Replaces all markdown image links that look like ![alttext](path/to/img "optional title")
+    # and prepends the path to @docset plus the '/_img/' directory to it. Does not match links that include a :,
+    # which would denote an absolute url like http://somesite.com/path/to/img.png
+    #
+    # Given ![alttext](path/to/img "optional title") this should replace with
+    #       ![alttext](/path/to/docset/_img/path/to/img "optional title")
+    # TODO: write tests for this
+    def handle_internal_image_urls(full_doc)
+      full_doc.gsub!(/!\[(.*)]\(([^ :"]*)[\s|\)]?(.*)\)/) { |s|
+        alt_text = $1;
+        img_path = $2
+        title = $3
+        # strip out the leading slash in the url if it's there and prepend the docset path and the
+        # /_img/ directory path
+        img_path = @docset.full_url_from_path('/_img/' + img_path.sub(/^\//, ''))
+        "![#{alt_text}](#{img_path}" + (title ? " #{title}" : '') + ')'
+      }
+    end
+
+    # Replaces double bracket internal document link expressions with regular markdown link expressions
+    # Matches both [[Doc Name]] and [[Friendly Display Name | Doc Name]]
+    # TODO: write tests for this
     def handle_internal_doc_links(full_doc)
       full_doc.gsub!(/\[{2}([^|\]]*)\|?([^|\]]*)\]{2}/) { |s|
         docname = $1.strip

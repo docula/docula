@@ -50,10 +50,18 @@ class DocSet < Sequel::Model(:docsets)
     @docname_url_map[key].chomp('/') unless @docname_url_map[key].nil?
   end
 
-  # Returns the full url for the given document name
+  # Returns the full url for the given document name. This includes the url path prepended
+  # with the docset name, branch, and a leading '/'.
   def full_url(docname)
     url = url_path(docname)
-    '/' + [self.name, self.branch, url].join('/') if url
+    full_url_from_path(url)
+  end
+
+  # Returns the full url for the given url path by prepending a '/' and the path to
+  # this docset (currently name/branch), followed by the given url_path. The given url_path
+  # can have a leading slash or not; this function will still work fine
+  def full_url_from_path(url_path)
+    '/' + [self.name, self.branch, url_path.sub(/^\//, '')].join('/') if url_path
   end
 
   # Assuming that markdown links look like this:
