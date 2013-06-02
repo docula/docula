@@ -64,12 +64,14 @@ class DocSet < Sequel::Model(:docsets)
           build_lookup_maps(absolute_path + '/')
         end
 
+        #Build the URL which should be the relative path to the file minus the file extension
+        file_ext = File::extname(absolute_path)
         filepath = File::basename(absolute_path, File::extname(absolute_path))
         relative_filepath = relative_path + filepath
         url = build_url(relative_filepath)
         @docname_url_map[build_key(relative_filepath)] = url
 
-        @url_fs_map[url] = absolute_path
+        @url_fs_map[url] = absolute_path + file_ext
       end
     end
   end
