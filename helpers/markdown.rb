@@ -27,10 +27,10 @@ module DoculaMarkdown
 
         display_text = docname
         unless $2.strip.empty?
-          display_text = $2.strip
+          url = @docset.full_url($2.strip)
         end
 
-        display_text and url ? "[#{display_text}](#{url})" : s
+        display_text and url ? "<a href='#{url}' class='internal'>#{display_text}</a>" : s
       }
     end
   end
@@ -41,7 +41,8 @@ module DoculaMarkdown
     :fenced_code_blocks => true,
     :disable_indented_code_blocks => true,
     :autolink => true,
-    :space_after_headers => true
+    :space_after_headers => true,
+    :tables => true
   }
 
   # Render the given text with Docula's markdown renderer
