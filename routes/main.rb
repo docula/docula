@@ -18,16 +18,16 @@ class Docula < Sinatra::Application
       end
 
       absolute_path << (File::extname(absolute_path) == '' ? ".#{extension}" : '')
-
+      file_mimetype = DoculaFile::detect_mime_type(absolute_path)
       File.open(absolute_path) do |file|
         @raw = file.read
-        # don't attempt to process images stored in the docset repo
-        @html = DoculaMarkdown.render(docset, @raw) unless absolute_path.include? '_img'
+        # Only attempt to render text files
+        @html = DoculaMarkdown.render(docset, @raw) if file_mimetype.include? 'text'
         @sidebar = DoculaMarkdown.render_sidebar(docset)
       end
 
       if extension == 'raw' || !extension.nil?
-        content_type DoculaFile::detect_mime_type(absolute_path)
+        content_type file_mimetype
         @raw
       elsif extension == 'html'
         @html
