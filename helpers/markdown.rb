@@ -53,6 +53,6 @@ module DoculaMarkdown
 
   # Render the sidebar for this docset
   def self.render_sidebar(docset)
-    render(docset, docset.build_sidebar_md)
+    render(docset, docset.sidebar_md)
   end
 end

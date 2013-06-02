@@ -28,8 +28,10 @@ class DocSet < Sequel::Model(:docsets)
         # If the current item is a directory, build the sidebar for that directory
         docname = $1.split('|')[0].strip.downcase
         path = @url_fs_map[@docname_url_map[docname]]
-        if Dir.exist?(path)
-          result += build_sidebar_md(path, level + 1)
+        unless docname == '.'
+          if Dir.exist?(path)
+            result += build_sidebar_md(path, level + 1)
+          end
         end
       }
     end
@@ -51,7 +53,7 @@ class DocSet < Sequel::Model(:docsets)
   # Returns the full url for the given document name
   def full_url(docname)
     url = url_path(docname)
-    '/' + '/'.join(self.name, self.branch, url) if url
+    '/' + [self.name, self.branch, url].join('/') if url
   end
 
   # Assuming that markdown links look like this:
@@ -68,20 +70,19 @@ class DocSet < Sequel::Model(:docsets)
     relative_path = base_dir.sub(self.fs_path, '').sub(/^\//, '')
     Dir.foreach(base_dir) do |dir_item|
       # exclude . and _ files/directories
-      if !dir_item.start_with?('.', '_')
+      unless dir_item.start_with?('.', '_')
         absolute_path = "#{base_dir}/#{dir_item}"
         if Dir.exist?(absolute_path)
           build_lookup_maps(absolute_path + '/')
         end
 
         #Build the URL which should be the relative path to the file minus the file extension
-        file_ext = File::extname(absolute_path)
         filepath = File::basename(absolute_path, File::extname(absolute_path))
         relative_filepath = relative_path + filepath
         url = build_url(relative_filepath)
         @docname_url_map[build_docname_key(relative_filepath)] = url
 
-        @url_fs_map[url] = absolute_path + file_ext
+        @url_fs_map[url] = absolute_path.squeeze('/')
       end
     end
   end
