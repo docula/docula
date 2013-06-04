@@ -1,5 +1,4 @@
 require 'sequel'
-require 'yaml'
 
 # Database connection information is read from environment variables
 DB = Sequel.connect(:adapter  => ENV['docula.db.adapter'],

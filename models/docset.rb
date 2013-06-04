@@ -1,4 +1,7 @@
 class DocSet < Sequel::Model(:docsets)
+
+  DocSet.plugin :after_initialize
+
   # Database persisted properties
   @name = nil
   @branch = nil
