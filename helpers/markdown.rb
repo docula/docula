@@ -27,7 +27,7 @@ module DoculaMarkdown
     #       ![alttext](/path/to/docset/_img/path/to/img "optional title")
     # TODO: write tests for this
     def handle_internal_image_urls(full_doc)
-      full_doc.gsub!(/!\[(.*)]\(([^ :"]*)[\s|\)]?(.*)\)/) { |s|
+      full_doc.gsub!(/!\[(.*)\]\(([^ :"]*)[\s|\)]?(.*)\)/) { |s|
         alt_text = $1;
         img_path = $2
         title = $3
