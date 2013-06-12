@@ -3,8 +3,16 @@
 You're already using git to manage your code. Why not use it to manage your docs too?
 
 # Requirements
-1. Ruby 1.9 (tested on **1.9.3p429** specifically). If you are using rbenv then this should be automatic
-2. 
+1. Ruby 1.9 (tested on **1.9.3p429** specifically). If you are using rbenv then this should be automatically used from 
+2. libmagic
+
+    **OSX** - brew install libmagic
+    <br />
+    **Linux** - sudo apt-get install file-devel
+3. Bundler
+
+    gem install bundler
+4. An accessible MySQL instance
 
 ## Starting up
 If you already have Ruby version 1.9+ (currently tested on version 1.9.3p429) then you're ahead of the game!
@@ -41,5 +49,14 @@ If you are using MySQL, ensure that your MySQL dylib is in /usr/lib (it's not by
 sudo ln -s /usr/local/mysql/lib/libmysqlclient.18.dylib /usr/lib/libmysqlclient.18.dylib
 ```
 
-## Attribution
+# Docsets
+Each version of your documentation is referred to as a Docset. In the database, this includes the name of the docset, the branch that this particular docset is referring to (like 1.0, 2.3, etc) and an absolute path to a git repository on your local filesystem. This should be checked out at the correct branch (the same one configured in the database)
+
+## URL Mappings
+
+## Links
+ * Talk about internal links (like Gollum)
+ * Linking to docs and folders
+
+# Attribution
 This project is based on the [Riblits](https://github.com/Phrogz/riblits) project structure for Sinatra applications.
