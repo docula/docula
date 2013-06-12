@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'yaml'
 $config = YAML.load_file('cfg/' + ENV['USER'] + '.yml')
 
 module MinifyResources
