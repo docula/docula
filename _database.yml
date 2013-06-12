@@ -1,5 +1,8 @@
-# adapter : mysql
-# host : localhost
-# user : root
-# password : 
-# database : docula
+# Populate with values relevant to your database. In order for
+# Docula to properly pick up this file, this should be renamed
+# to 'database.yml'
+adapter : mysql
+host : localhost
+user : root
+password : 
+database : docula
