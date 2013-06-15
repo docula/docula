@@ -5,8 +5,8 @@ theme : default
 data :
   - name    : 'docula-sample'
     branch  : 'master'
-    fs_path : '/Users/phillipverheyden/docula-sample'
+    fs_path : '/Users/phillipverheyden/docula/docula-sample'
 
   - name    : 'docula-sample2'
     branch  : 'master'
-    fs_path : '/Users/phillipverheyden/docula-sample2'
+    fs_path : '/Users/phillipverheyden/docula/docula-sample2'
