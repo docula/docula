@@ -11,7 +11,10 @@ GEM
       posix-spawn (~> 0.3.6)
     haml (4.0.3)
       tilt
+    metaclass (0.0.1)
     mime-types (1.23)
+    mocha (0.14.0)
+      metaclass (~> 0.0.1)
     mysql (2.9.1)
     posix-spawn (0.3.6)
     pygments.rb (0.3.7)
@@ -49,6 +52,7 @@ PLATFORMS
 DEPENDENCIES
   grit
   haml
+  mocha
   mysql
   pygments.rb (~> 0.3.2)
   rack (= 1.4.1)

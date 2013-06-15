@@ -10,10 +10,15 @@ gem 'haml'
 gem 'sequel'
 gem 'mysql'
 
-gem 'grit'
-gem 'redcarpet', '~>2.1.1'
-gem 'pygments.rb', '~>0.3.2'
+# interesting libs
+gem 'grit' # git wrapper
+gem 'redcarpet', '~>2.1.1' # markdown -> html
+gem 'pygments.rb', '~>0.3.2' # excellent syntax highlighting
 
 # To use on osx - 'brew install libmagic'
 # To use on linux - apt-get install file-devel
-gem 'ruby-filemagic'
+gem 'ruby-filemagic' # determine mime_type based on the raw file for service statics within a docset
+
+gem 'mocha', :group => :test# good Minitest mocking support
+
+

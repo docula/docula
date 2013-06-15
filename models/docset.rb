@@ -9,9 +9,11 @@ class DocSet < Sequel::Model(:docsets)
 
   def after_initialize
     @docname_url_map = {'.' => ''}
-    @url_fs_map = {'' => self.fs_path}
+    if (self.respond_to? 'fs_path')
+      @url_fs_map = {'' => self.fs_path}
 
-    build_lookup_maps(self.fs_path)
+      build_lookup_maps(self.fs_path)
+    end
   end
 
   # Returns a String with the full indented markdown-formatted
@@ -66,11 +68,16 @@ class DocSet < Sequel::Model(:docsets)
     full_url_from_path(url)
   end
 
-  # Returns the full url for the given url path by prepending a '/' and the path to
-  # this docset (currently name/branch), followed by the given url_path. The given url_path
+  # Returns the full url for the given url path by prepending the docset_url
+  # followed by the given url_path. The given url_path
   # can have a leading slash or not; this function will still work fine
   def full_url_from_path(url_path)
-    '/' + [self.name, self.branch, url_path.sub(/^\//, '')].join('/') if url_path
+    [self.docset_url, url_path.sub(/^\//, '')].join('/') if url_path
+  end
+
+  # Returns the url for this docset with the beginning slash for use as an absolute URL
+  def docset_url
+    '/' + [self.name, self.branch].join('/')
   end
 
   # Assuming that markdown links look like this:

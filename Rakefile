@@ -13,4 +13,8 @@ end
 Rake::TestTask.new do |t|
   t.pattern = 'test/**/*_spec.rb'
   t.libs.push 'test'
+  t.libs.push 'helpers'
+  t.libs.push 'models'
+  t.libs.push 'routes'
+  t.verbose = true
 end
