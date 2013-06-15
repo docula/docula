@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/reloader'
 require 'haml'
 require 'redcarpet'
 require 'grit'
@@ -24,6 +25,7 @@ class Docula < Sinatra::Application
     set :haml, { :ugly => true }
     set :css_files, MinifyResources::CSS_FILES
     set :js_files, MinifyResources::JS_FILES
+    register Sinatra::Reloader
   end
 
   set :public_folder, Proc.new { File.join(root, '/public/', $config['theme']) }
