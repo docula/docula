@@ -13,6 +13,10 @@ $config = YAML.load_file('cfg/' + ENV['USER'] + '.yml')
 class Docula < Sinatra::Application
   enable :sessions
 
+  configure :production, :development do
+    enable :logging
+  end
+
   configure :production do
     set :haml, { :ugly => true }
     set :clean_trace, true

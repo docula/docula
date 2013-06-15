@@ -17,6 +17,8 @@ class Docula < Sinatra::Application
         absolute_path << '/_index.md'
       end
 
+      logger.info 'Loading file: ' + absolute_path
+
       file_mimetype = DoculaFile::detect_mime_type(absolute_path)
 
       if format == 'raw' or !absolute_path.end_with?('.md')
