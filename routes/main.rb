@@ -18,17 +18,20 @@ class Docula < Sinatra::Application
       end
 
       file_mimetype = DoculaFile::detect_mime_type(absolute_path)
-      File.open(absolute_path) do |file|
-        @raw = file.read
-        # Only attempt to render text files
-        @html = DoculaMarkdown.render(docset, @raw) if file_mimetype.include? 'text'
-        @sidebar = DoculaMarkdown.render_sidebar(docset)
-      end
 
       if format == 'raw' or !absolute_path.end_with?('.md')
         content_type file_mimetype
-        @raw
-      elsif absolute_path.end_with?('.md')
+        send_file absolute_path,
+                  :type => file_mimetype,
+                  :disposition => 'inline'
+      else
+        File.open(absolute_path) do |file|
+          @raw = file.read
+          # Only attempt to render text files
+          @html = DoculaMarkdown.render(docset, @raw) if file_mimetype.include? 'text'
+          @sidebar = DoculaMarkdown.render_sidebar(docset)
+        end
+
         haml :page, :layout => !request.xhr?
       end
     end
