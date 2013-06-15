@@ -6,6 +6,7 @@ class Docula < Sinatra::Application
       name     = params[:name]
       branch   = params[:branch]
       url_path = params[:splat][0].to_s.chomp('/')
+      format      = params[:format]
 
       docset = DocSet[:name => name, :branch => branch]
 
@@ -24,13 +25,12 @@ class Docula < Sinatra::Application
         @sidebar = DoculaMarkdown.render_sidebar(docset)
       end
 
-      if absolute_path.end_with?('.md')
-        haml :page, :layout => !request.xhr?
-      else
+      if format == 'raw' or !absolute_path.end_with?('.md')
         content_type file_mimetype
         @raw
+      elsif absolute_path.end_with?('.md')
+        haml :page, :layout => !request.xhr?
       end
     end
   end
-
 end

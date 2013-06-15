@@ -14,8 +14,8 @@ module DoculaMarkdown
     # Fires off all necessary Docula preprocessors
     # Automatically invoked by Redcarpet
     def preprocess(full_doc)
-      handle_internal_doc_links(full_doc)
-      handle_internal_image_urls(full_doc)
+      full_doc = handle_internal_doc_links(full_doc)
+      full_doc = handle_internal_image_urls(full_doc)
       full_doc
     end
 
@@ -27,7 +27,7 @@ module DoculaMarkdown
     #       ![alttext](/path/to/docset/_img/path/to/img "optional title")
     # TODO: write tests for this
     def handle_internal_image_urls(full_doc)
-      full_doc.gsub!(/!\[(.*)\]\(([^ :"]*)[\s|\)]?(.*)\)/) { |s|
+      full_doc.gsub(/!\[(.*)\]\(([^ :"]*)[\s|\)]?(.*)\)/) { |s|
         alt_text = $1;
         img_path = $2
         title = $3
@@ -42,7 +42,7 @@ module DoculaMarkdown
     # Matches both [[Doc Name]] and [[Friendly Display Name | Doc Name]]
     # TODO: write tests for this
     def handle_internal_doc_links(full_doc)
-      full_doc.gsub!(/\[{2}([^|\]]*)\|?([^|\]]*)\]{2}/) { |s|
+      full_doc.gsub(/\[{2}([^|\]]*)\|?([^|\]]*)\]{2}/) { |s|
         docname = $1.strip
         url = @docset.full_url(docname)
 
