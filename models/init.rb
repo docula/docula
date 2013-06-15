@@ -1,7 +1,7 @@
 require 'sequel'
 require 'yaml'
 
-database_config = YAML.load_file('database.yml') if File.exist? 'database.yml'
+database_config = YAML.load_file('cfg/database.yml') if File.exist? 'cfg/database.yml'
 
 if (!database_config)
   database_config = {
