@@ -1,13 +1,16 @@
 require 'rake/testtask'
+require 'rake'
 
 desc 'Launch the app with shotgun.'
 task :shotgun do
-   system 'shotgun'
+  Rake::Task[:test].invoke
+  system 'shotgun'
 end
 
 desc 'Launch the app with rackup.'
 task :rackup do
-   system 'rackup'
+  Rake::Task[:test].invoke
+  system 'rackup'
 end
 
 Rake::TestTask.new do |t|

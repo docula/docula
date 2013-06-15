@@ -40,6 +40,12 @@ describe DoculaMarkdown do
       md = '![alt](some_image.png "title")'
       @renderer.handle_internal_image_urls(md).must_equal '![alt](/docset/master/_img/some_image.png "title")'
     end
+
+    it 'does not modify original string' do
+      md = '![alt](some_image.png "title")'
+      @renderer.handle_internal_image_urls(md)
+      md.must_equal '![alt](some_image.png "title")'
+    end
   end
 
   describe 'Document Links' do
@@ -47,15 +53,23 @@ describe DoculaMarkdown do
 
     end
 
-    it 'only matches braces' do
+    it 'only matches double square brackets' do
 
     end
 
-    it 'does not require display test' do
+    it 'does not require display text' do
 
     end
 
-    it 'allows separate display text' do
+    it 'works with display text' do
+
+    end
+
+    it 'works with folders' do
+
+    end
+
+    it 'does not blow up if the document cannot be found in the docset' do
 
     end
   end
