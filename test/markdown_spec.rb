@@ -20,7 +20,8 @@ describe DoculaMarkdown do
 
   describe 'Image Links' do
     it 'rewrites docset images' do
-      @renderer.handle_internal_image_urls('![text](some_image.png)').must_equal '![text](/docset/master/_img/some_image.png)'
+      md = '![text](some_image.png)'
+      @renderer.handle_internal_image_urls(md).must_equal '![text](/docset/master/_img/some_image.png)'
     end
 
     it 'does not render double slashes' do
@@ -32,7 +33,8 @@ describe DoculaMarkdown do
     end
 
     it 'does not rewrite external image links' do
-
+      md = '![text](http://example.com/img.png)'
+      @renderer.handle_internal_image_urls(md).must_equal md
     end
 
     it 'rewrites internal doc URLs' do

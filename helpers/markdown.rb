@@ -27,14 +27,18 @@ module DoculaMarkdown
     #       ![alttext](/path/to/docset/_img/path/to/img "optional title")
     # TODO: write tests for this
     def handle_internal_image_urls(full_doc)
-      full_doc.gsub(/!\[(.*)\]\(([^ :"]*)[\s|\)]?(.*)\)/) { |s|
-        alt_text = $1
-        img_path = $2
-        title = $3
-        # strip out the leading slash in the url if it's there and prepend the docset path and the
-        # /_img/ directory path
-        img_path = @docset.full_url_from_path('/_img/' + img_path.sub(/^\//, ''))
-        "![#{alt_text}](#{img_path}" + (!title.empty? ? " #{title}" : '') + ')'
+      full_doc.gsub(/!\[(.*)\]\(([^ "]*)[\s|\)]?(.*)\)/) { |s|
+        if s.include? ':'
+          s
+        else
+          alt_text = $1
+          img_path = $2
+          title = $3
+          # strip out the leading slash in the url if it's there and prepend the docset path and the
+          # /_img/ directory path
+          img_path = @docset.full_url_from_path('/_img/' + img_path.sub(/^\//, ''))
+          "![#{alt_text}](#{img_path}" + (!title.empty? ? " #{title}" : '') + ')'
+        end
       }
     end
 
