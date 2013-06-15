@@ -10,35 +10,35 @@ describe DoculaMarkdown do
     @renderer = DoculaMarkdown::DoculaHTMLRender.new(@docset)
   end
 
-  it 'passes a trivial test' do
-    true.must_equal true
+  describe 'Sanity Checks' do
+    it 'passes a trival test' do
+      true.must_equal true
+    end
+
+    it 'works with partial mocks' do
+      @docset.full_url_from_path('_img').must_equal '/docset/master/_img'
+    end
   end
 
-  it 'works with mocks' do
-    @docset.full_url_from_path('_img').must_equal '/docset/master/_img'
-  end
-
-  describe 'Image Links' do
+  describe 'Internal Image Links' do
     it 'rewrites docset images' do
       md = '![text](some_image.png)'
       @renderer.handle_internal_image_urls(md).must_equal '![text](/docset/master/_img/some_image.png)'
     end
 
-    it 'does not render double slashes' do
-
-    end
-
-    it 'does not require a title' do
-
+    it 'prevents double slashes' do
+      md = '![alt](/some_image.png)'
+      @renderer.handle_internal_image_urls(md).must_equal '![alt](/docset/master/_img/some_image.png)'
     end
 
     it 'does not rewrite external image links' do
-      md = '![text](http://example.com/img.png)'
+      md = '![alt](http://example.com/img.png)'
       @renderer.handle_internal_image_urls(md).must_equal md
     end
 
-    it 'rewrites internal doc URLs' do
-
+    it 'handles titles' do
+      md = '![alt](some_image.png "title")'
+      @renderer.handle_internal_image_urls(md).must_equal '![alt](/docset/master/_img/some_image.png "title")'
     end
   end
 
@@ -59,6 +59,4 @@ describe DoculaMarkdown do
 
     end
   end
-
 end
-
