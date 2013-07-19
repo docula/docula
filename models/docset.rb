@@ -5,11 +5,17 @@ class DocSet < Sequel::Model(:docsets)
   # Database persisted properties
   @name = nil
   @branch = nil
+  @is_current = nil
   @fs_path = nil
 
   def after_initialize
     @docname_url_map = {'.' => ''}
     if (self.respond_to? 'fs_path')
+      if self.is_current
+        @branch_name = 'current'
+      else
+        @branch_name = self.branch
+      end
       @url_fs_map = {'' => self.fs_path}
 
       build_lookup_maps(self.fs_path)
@@ -77,7 +83,7 @@ class DocSet < Sequel::Model(:docsets)
 
   # Returns the url for this docset with the beginning slash for use as an absolute URL
   def docset_url
-    '/' + [self.name, self.branch].join('/')
+    '/' + [self.name, @branch_name].join('/')
   end
 
   # Assuming that markdown links look like this:

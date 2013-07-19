@@ -1,19 +1,34 @@
 class Docula < Sinatra::Application
 
-  # We want to serve the homepage with a trailing slash for tree-JS compatibility
-  get '/:name/:branch' do
-    redirect to("/#{params[:name]}/#{params[:branch]}/"), 301
-  end
-
   # We will rely on the splat path matcher to support files that are in subdirectories
-  %w(/:name/:branch/ /:name/:branch/*).each do |path|
+  %w(/:name/:branch /:name/:branch/*).each do |path|
     get path do
       name     = params[:name]
       branch   = params[:branch]
       url_path = params[:splat][0].to_s.chomp('/')
-      format      = params[:format]
+      format   = params[:format]
 
-      docset = DocSet[:name => name, :branch => branch]
+      # Loop through all known repositories for the given name and establish
+      # the sidebar for available versions as well as determine which version
+      # should be served.
+      docset = nil
+      @branches = Hash.new()
+      DocSet.where(:name => name).each { |ds|
+        branch_id = ds.branch
+        if ds.is_current
+          if branch == 'current'
+            docset = ds
+          end
+          branch_id = 'current'
+          branch_name = "Current Version (#{ds.branch})"
+        else
+          if branch == ds.branch
+            docset = ds
+          end
+          branch_name = ds.branch
+        end
+        @branches[branch_id] = branch_name
+      }
 
       # If the absolute filesystem path for this url is a directory,
       # we want to render the index.md file in that directory.

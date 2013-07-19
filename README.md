@@ -8,14 +8,14 @@ You're already using git to manage your code. Why not use it to manage your docs
 
     **OSX** - brew install libmagic
     <br />
-    **Linux** - sudo apt-get install file-devel
+    **Linux** - sudo apt-get install libmagic1 libmagic-dev
 3. Bundler
 
     gem install bundler
 4. An accessible MySQL instance
 
 ## Starting up
-If you already have Ruby version 1.9+ (currently tested on version 1.9.3p429) then you're ahead of the game!
+If you already have Ruby version 1.9+ (currently tested on version 1.9.3p429) then you're ahead of the game! If not, we recommend installing rbenv, ruby-build, and installing ruby through rbenv.
 
 ## Environment Configuration
 
