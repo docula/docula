@@ -1,7 +1,12 @@
 class Docula < Sinatra::Application
 
+  # We want to serve the homepage with a trailing slash for tree-JS compatibility
+  get '/:name/:branch' do
+    redirect to("/#{params[:name]}/#{params[:branch]}/"), 301
+  end
+
   # We will rely on the splat path matcher to support files that are in subdirectories
-  %w(/:name/:branch /:name/:branch/*).each do |path|
+  %w(/:name/:branch/ /:name/:branch/*).each do |path|
     get path do
       name     = params[:name]
       branch   = params[:branch]
