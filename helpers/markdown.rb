@@ -66,7 +66,7 @@ module DoculaMarkdown
     :fenced_code_blocks => true,
     :disable_indented_code_blocks => true,
     :autolink => true,
-    :space_after_headers => true,
+    :space_after_headers => false,
     :tables => true
   }
 
