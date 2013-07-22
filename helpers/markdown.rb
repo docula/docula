@@ -52,7 +52,11 @@ module DoculaMarkdown
 
         display_text = docname
         unless $2.strip.empty?
-          url = @docset.full_url($2.strip)
+          url_parts = $2.strip.split('#')
+          url = @docset.full_url(url_parts[0].strip)
+          if url_parts.length == 2
+            url << "##{url_parts[1]}"
+          end
         end
 
         display_text and url ? "<a href='#{url}' class='internal'>#{display_text}</a>" : s
