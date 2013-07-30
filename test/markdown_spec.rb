@@ -36,6 +36,32 @@ describe DoculaMarkdown do
       @renderer.handle_internal_image_urls(md).must_equal md
     end
 
+    it 'handles images inside of links' do
+      # yo dawg i herd you like images
+      md = '[![alt](http://example.com/img.png)](some/other/path)'
+      @renderer.handle_internal_image_urls(md).must_equal '[![alt](http://example.com/img.png)](some/other/path)'
+    end
+
+    it 'handles internal images inside of links' do
+      md = '[![alt](some_image.png)](some/other/path)'
+      @renderer.handle_internal_image_urls(md).must_equal '[![alt](/docset/master/_img/some_image.png)](some/other/path)'
+    end
+
+    it 'handles internal images inside of links with title' do
+      md = '[![alt](some_image.png "title")](some/other/path)'
+      @renderer.handle_internal_image_urls(md).must_equal '[![alt](/docset/master/_img/some_image.png "title")](some/other/path)'
+    end
+
+    it 'handles internal image links' do
+      md = '[something](_img/some_image.png)'
+      @renderer.handle_internal_image_links(md).must_equal '[something](/docset/master/_img/some_image.png)'
+    end
+
+    it 'handles internal image links with titles' do
+      md = '[something](_img/some_image.png "some title")'
+      @renderer.handle_internal_image_links(md).must_equal '[something](/docset/master/_img/some_image.png "some title")'
+    end
+
     it 'handles titles' do
       md = '![alt](some_image.png "title")'
       @renderer.handle_internal_image_urls(md).must_equal '![alt](/docset/master/_img/some_image.png "title")'

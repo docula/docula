@@ -16,6 +16,7 @@ module DoculaMarkdown
     def preprocess(full_doc)
       full_doc = handle_internal_doc_links(full_doc)
       full_doc = handle_internal_image_urls(full_doc)
+      full_doc = handle_internal_image_links(full_doc)
       full_doc
     end
 
@@ -25,9 +26,8 @@ module DoculaMarkdown
     #
     # Given ![alttext](path/to/img "optional title") this should replace with
     #       ![alttext](/path/to/docset/_img/path/to/img "optional title")
-    # TODO: write tests for this
     def handle_internal_image_urls(full_doc)
-      full_doc.gsub(/!\[(.*)\]\(([^ \)"]*)[\s|\)]?(.*)\)/) { |s|
+      full_doc.gsub(/!\[([^\]]*)\]\(([^ \)"]*)[\s]*("[^"]*")?\)/) { |s|
         if s.include? ':'
           s
         else
@@ -37,14 +37,36 @@ module DoculaMarkdown
           # strip out the leading slash in the url if it's there and prepend the docset path and the
           # /_img/ directory path
           img_path = @docset.full_url_from_path('/_img/' + img_path.sub(/^\//, ''))
-          "![#{alt_text}](#{img_path}" + (!title.empty? ? " #{title}" : '') + ')'
+          "![#{alt_text}](#{img_path}" + (!title.nil? && !title.empty? ? " #{title}" : '') + ')'
+        end
+      }
+    end
+
+    # Replaces all links that start with _img/ or /_img/ with a link that takes into account the current
+    # docset's configured url.
+    #
+    # Given (/_img/path/to/image.png)
+    #       (/path/to/docset/_img/path/to/image.png)
+    def handle_internal_image_links(full_doc)
+      full_doc.gsub(/\(([^\]\)]*)\)/) { |s|
+        if s.include? ':'
+          s
+        else
+          link = $1
+
+          if link.start_with? '_img/' or link.start_with? '/_img/'
+            link = link.sub(/^\//, '')
+            link = @docset.full_url_from_path("/#{link}")
+            "(#{link})"
+          else
+            s
+          end
         end
       }
     end
 
     # Replaces double bracket internal document link expressions with regular markdown link expressions
     # Matches both [[Doc Name]] and [[Friendly Display Name | Doc Name]]
-    # TODO: write tests for this
     def handle_internal_doc_links(full_doc)
       full_doc.gsub(/\[{2}([^|\]]*)\|?([^|\]]*)\]{2}/) { |s|
         docname = $1.strip
