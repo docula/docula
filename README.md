@@ -4,15 +4,27 @@ You're already using git to manage your code. Why not use it to manage your docs
 
 # Requirements
 1. Ruby 1.9 (tested on **1.9.3p429** specifically). If you are using rbenv then this should be automatically used from `.ruby-version`
+
 2. libmagic
 
     **OSX** - brew install libmagic
     <br />
     **Linux** - sudo apt-get install libmagic1 libmagic-dev
+
 3. Bundler
 
     gem install bundler
-4. An accessible MySQL instance
+   
+4. An accessible MySQL instance. 
+ 
+5. The mysql gem. On OS X, you'll typically need the following command:
+  
+    sudo ln -s /usr/local/mysql/lib/libmysqlclient.18.dylib /usr/lib/libmysqlclient.18.dylib
+    gem install mysql -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
+
+6. The remainder of the gems
+  
+    bundle
 
 ## Starting up
 If you already have Ruby version 1.9+ (currently tested on version 1.9.3p429) then you're ahead of the game! If not, we recommend installing rbenv, ruby-build, and installing ruby through rbenv.
