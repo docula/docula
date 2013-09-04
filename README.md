@@ -3,7 +3,7 @@
 You're already using git to manage your code. Why not use it to manage your docs too?
 
 # Requirements
-1. Ruby 1.9 (tested on **1.9.3p429** specifically). If you are using rbenv then this should be automatically used from 
+1. Ruby 1.9 (tested on **1.9.3p429** specifically). If you are using rbenv then this should be automatically used from `.ruby-version`
 2. libmagic
 
     **OSX** - brew install libmagic
