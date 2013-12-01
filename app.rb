@@ -33,9 +33,6 @@ class Docula < Sinatra::Application
     set :js_files, MinifyResources::JS_FILES
   end
 
-  set :public_folder, Proc.new { File.join(root, '/public/') }
-  set :views, Proc.new { File.join(root, '/views/') }
-
   helpers do
     include Rack::Utils
     alias_method :h, :escape_html
