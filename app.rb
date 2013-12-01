@@ -18,14 +18,9 @@ class Docula < Sinatra::Application
   configure :production do
     set :clean_trace, true
     set :show_exceptions, false
-
-    # Minify is currently throwing an error due to the JS
-    # code in this project.
-    # set :css_files, :blob
-    # set :js_files, :blob
-    # MinifyResources.minify_all
-    set :css_files, MinifyResources::CSS_FILES
-    set :js_files, MinifyResources::JS_FILES
+    set :css_files, :blob
+    set :js_files, :blob
+    MinifyResources.minify_all
   end
 
   configure :development do

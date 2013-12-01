@@ -1,2 +1,4 @@
 .idea/
 database.yml
+public/blob.css
+public/blob.js
