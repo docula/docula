@@ -16,29 +16,5 @@ end
 # Database connection information is read from environment variables
 DB = Sequel.connect(database_config)
 
-# If the recreate flag is set to true in a user's property file, we will
-# recreate and seed the database with the values from the user's property file
-if ($config['recreate'])
-  if (DB.table_exists?(:docsets))
-    DB.drop_table :docsets
-  end
-
-  DB.create_table :docsets do
-    primary_key :id
-    String :name
-    String :branch
-    Boolean :is_current
-    String :fs_path
-  end
-
-  docsets = DB[:docsets]
-
-  $config['data'].each do |record|
-    docsets.insert(:name       => record['name'],
-                   :branch     => record['branch'],
-                   :is_current => record['is_current'],
-                   :fs_path    => record['fs_path'])
-  end
-end
-
+# Load the actual model objects
 require_relative 'docset'

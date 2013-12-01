@@ -5,6 +5,10 @@ class Docula < Sinatra::Application
     cache_control :no_cache, :no_store, :must_revalidate, :max_age => 0
   end
 
+  get '/test' do
+      'ok'
+  end
+
   # We will rely on the splat path matcher to support files that are in subdirectories
   %w(/:name/:branch /:name/:branch/*).each do |path|
     get path do

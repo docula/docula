@@ -7,9 +7,6 @@ require 'yaml'
 
 require_relative 'minify_resources'
 
-# We will load configuration from user specific files
-$config = YAML.load_file('cfg/' + ENV['USER'] + '.yml')
-
 class Docula < Sinatra::Application
   enable :sessions
 
@@ -36,8 +33,8 @@ class Docula < Sinatra::Application
     set :js_files, MinifyResources::JS_FILES
   end
 
-  set :public_folder, Proc.new { File.join(root, '/public/', $config['theme']) }
-  set :views, Proc.new { File.join(root, '/views/', $config['theme']) }
+  set :public_folder, Proc.new { File.join(root, '/public/') }
+  set :views, Proc.new { File.join(root, '/views/') }
 
   helpers do
     include Rack::Utils
