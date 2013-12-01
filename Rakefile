@@ -13,6 +13,11 @@ task :rackup do
   system 'rackup'
 end
 
+desc 'Launch the app with rackup in production mode.'
+task :rackupprod do
+  system 'rackup -E production'
+end
+
 Rake::TestTask.new do |t|
   t.pattern = 'test/**/*_spec.rb'
   t.libs.push 'test'
