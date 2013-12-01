@@ -10,6 +10,10 @@ gem 'haml'
 gem 'sequel'
 gem 'mysql'
 
+# production libs
+gem 'jsmin'
+gem 'cssmin'
+
 # interesting libs
 gem 'grit' # git wrapper
 gem 'redcarpet', '~>2.1.1' # markdown -> html

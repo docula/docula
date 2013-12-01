@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     backports (3.3.2)
+    cssmin (1.0.3)
     daemons (1.1.9)
     diff-lcs (1.2.4)
     eventmachine (1.0.3)
@@ -11,6 +12,7 @@ GEM
       posix-spawn (~> 0.3.6)
     haml (4.0.3)
       tilt
+    jsmin (1.0.1)
     metaclass (0.0.1)
     mime-types (1.23)
     mocha (0.14.0)
@@ -50,8 +52,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cssmin
   grit
   haml
+  jsmin
   mocha
   mysql
   pygments.rb (~> 0.3.2)
