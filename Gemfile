@@ -15,7 +15,7 @@ gem 'jsmin'
 gem 'cssmin'
 
 # interesting libs
-gem 'grit' # git wrapper
+gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
 gem 'redcarpet', '~>2.1.1' # markdown -> html
 gem 'pygments.rb', '~>0.3.2' # excellent syntax highlighting
 
@@ -24,5 +24,3 @@ gem 'pygments.rb', '~>0.3.2' # excellent syntax highlighting
 gem 'ruby-filemagic' # determine mime_type based on the raw file for service statics within a docset
 
 gem 'mocha', :group => :test# good Minitest mocking support
-
-

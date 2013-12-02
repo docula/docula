@@ -1,1 +1,12 @@
-%div= @html
+%a{:href => '#', :class => 'edit'} 'Edit'
+%div{:class => 'markdown-html'}= @html
+
+%form{:method => 'POST', :class => 'markdown'}
+   %textarea{:name => 'content'}= @raw
+   %label{:for => 'user'} User:
+   %input{:name => 'user', :type => 'string'}
+   %label{:for => 'email'} Email:
+   %input{:name => 'email', :type => 'string'}
+   %label{:for => 'message'} Message:
+   %input{:name => 'message', :type => 'string'}
+   %button{:type => 'submit'}= 'Submit changes'

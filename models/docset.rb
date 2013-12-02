@@ -22,6 +22,23 @@ class DocSet < Sequel::Model(:docsets)
     end
   end
 
+  def self.get(name, branch)
+    docset = nil
+    DocSet.where(:name => name).each { |ds|
+      if ds.is_current
+        if branch == 'current'
+          docset = ds
+        end
+      else
+        if branch == ds.branch
+          docset = ds
+        end
+      end
+    }
+
+    docset
+  end
+
   # Returns a String with the full indented markdown-formatted
   # sidebar for this entire docset
   def sidebar_md
@@ -59,6 +76,11 @@ class DocSet < Sequel::Model(:docsets)
   def absolute_path(url)
     return @url_fs_map[url].chomp('/') unless @url_fs_map[url].nil?
     self.fs_path + '/' + url unless url.nil?
+  end
+
+  # Returns the relative path from the root of this docset from the given absolute path
+  def relative_path(absolute_path)
+    absolute_path.sub(self.fs_path, '').sub(/^\//, '') unless absolute_path.nil?
   end
 
   # Returns the url path for the given document name

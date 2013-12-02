@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'haml'
 require 'redcarpet'
-require 'grit'
+require 'rugged'
 require 'yaml'
 
 require_relative 'minify_resources'
